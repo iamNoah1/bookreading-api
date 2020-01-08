@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookReadingRepository", "BookReadingRepository\BookReadingRepository.csproj", "{F1F93841-7A2D-40FC-9F24-F65B445C90E8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookReadingRepositoryIntegrationTest", "BookReadingRepositoryIntegrationTest\BookReadingRepositoryIntegrationTest.csproj", "{2314A787-540C-4B5E-945C-415356FA1140}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F1F93841-7A2D-40FC-9F24-F65B445C90E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1F93841-7A2D-40FC-9F24-F65B445C90E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1F93841-7A2D-40FC-9F24-F65B445C90E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1F93841-7A2D-40FC-9F24-F65B445C90E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2314A787-540C-4B5E-945C-415356FA1140}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2314A787-540C-4B5E-945C-415356FA1140}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2314A787-540C-4B5E-945C-415356FA1140}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2314A787-540C-4B5E-945C-415356FA1140}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {56E6A3F1-E55E-426D-A944-C3A040006615}
+	EndGlobalSection
+EndGlobal
