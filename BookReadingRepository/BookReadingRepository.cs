@@ -26,7 +26,7 @@ namespace BookReadingRepository
                 var nextLastPriority = await LastPriority() + 1;
                 newBookReading.priority = nextLastPriority;
 
-                await getCollection().InsertOneAsync(newBookReading);
+                await Collection().InsertOneAsync(newBookReading);
                 return new OkObjectResult(newBookReading);
             } catch (Exception e)
             {
@@ -44,7 +44,7 @@ namespace BookReadingRepository
                 Sort = Builders<BookReading>.Sort.Descending(bookReadingEntry => bookReadingEntry.priority)
             };
 
-            BookReading lastPriorityBookReading = (await getCollection().FindAsync(FilterDefinition<BookReading>.Empty, options)).FirstOrDefault() ?? new BookReading();
+            BookReading lastPriorityBookReading = (await Collection().FindAsync(FilterDefinition<BookReading>.Empty, options)).FirstOrDefault() ?? new BookReading();
             return lastPriorityBookReading.priority;
         }
 
@@ -53,9 +53,9 @@ namespace BookReadingRepository
         {
             try
             {
-                var bookReadings = await getCollection().Find(_ => true).ToListAsync();
+                var bookReadings = await Collection().Find(_ => true).ToListAsync();
                 return new OkObjectResult(bookReadings);
-            }catch (Exception e)
+            } catch (Exception e)
             {
                 var objectResult = new ObjectResult(e.Message);
                 objectResult.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -63,7 +63,22 @@ namespace BookReadingRepository
             }
         }
 
-        private static IMongoCollection<BookReading> getCollection()
+        [FunctionName("DeleteBookReading")]
+        public static async Task<IActionResult> DeleteBookReading([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "bookreadings/{id}")] HttpRequest req, string id, ILogger log)
+        {
+            try
+            {
+                await Collection().DeleteOneAsync(bookReading => bookReading.id == id);
+                return new NoContentResult();
+            } catch (Exception e)
+            {
+                var objectResult = new ObjectResult(e.Message);
+                objectResult.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return objectResult;
+            }
+        }
+
+        private static IMongoCollection<BookReading> Collection()
         {
             string connectionString = Environment.GetEnvironmentVariable("MONGO_DB_CONNECTION_STRING");
             MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));

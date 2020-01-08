@@ -17,7 +17,7 @@ namespace BookReadingRepositoryIntegrationTest
         private static readonly HttpClient client = new HttpClient();
         
         [Fact]
-        public async System.Threading.Tasks.Task BookReadingRepositoryShouldAddBookReadingEntryReturn200AndTheAddedBookReadingEntry()
+        public async System.Threading.Tasks.Task BookReadingRepositoryShouldAddBookReadingEntryReturn200AndTheAddedBookReadingEntryIfSuccessfullyAdded()
         {
             CleanDB();
 
@@ -82,6 +82,9 @@ namespace BookReadingRepositoryIntegrationTest
             var responseContent = response.Content.ReadAsStringAsync();
 
             BookReading[] result = JsonConvert.DeserializeObject<BookReading[]>(responseContent.Result);
+
+            Assert.Equal(200, (int)response.StatusCode);
+
             Assert.NotEmpty(result);
             Assert.Equal(2, result.Length);
 
@@ -120,6 +123,26 @@ namespace BookReadingRepositoryIntegrationTest
 
             Assert.Equal("Refactoring", refactoring.name);
             Assert.Equal(2, refactoring.priority);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task BookReadingRepositoryShouldReturn200AndDeleteAnEntryIfDeletedSuccessfully()
+        {
+            CleanDB();
+
+            var collection = GetDatabase().GetCollection<BookReading>("bookreadings");
+
+            BookReading universe = new BookReading();
+            universe.name = "universe in a nutshell";
+
+            collection.InsertOne(universe);
+
+            var response = await client.DeleteAsync("http://localhost:7071/api/bookreadings/" + universe.id);
+
+            var bookReadings = await GetDatabase().GetCollection<BookReading>("bookreadings").Find(_ => true).ToListAsync();
+
+            Assert.Equal(204, (int)response.StatusCode);
+            Assert.Empty(bookReadings);
         }
 
     }
