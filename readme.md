@@ -1,4 +1,5 @@
 # BookReading
+A sample Azure Functions Visual Studio Solution. Allows to store a prioritized list of Books. Can be used as a reading list.  
 
 
 # Included Projects
@@ -9,6 +10,15 @@
 
 # Endpoints
 
+* POST <baseurl>:<port>/api/bookreadings
+* GET <baseurl>:<port>/api/bookreadings
+* DELETE <baseurl>:<port>/api/bookreadings/<id>
+
+
+# Preparation
+
+* Checkout repository 
+* Copy `local.settings.json.example` to `local.settings.json` and maybe adjust the env variable `MONGO_DB_CONNECTION_STRING`
 
 
 # Run locally
