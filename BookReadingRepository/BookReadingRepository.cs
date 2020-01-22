@@ -9,24 +9,27 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using MongoDB.Driver;
 using System.Net;
-using System.Security.Authentication;
 
 namespace BookReadingRepository
 {
-    public static class BookReadingRepository
+    public class BookReadingRepository
     {
+        private BookReadingDBManager dBManager;
+
+        public BookReadingRepository(BookReadingDBManager dbManager)
+        {
+            this.dBManager = dbManager;
+        }
+
         [FunctionName("CreateBookReading")]
-        public static async Task<IActionResult> CreateBookReading([HttpTrigger(AuthorizationLevel.Function, "post", Route = "bookreadings")] HttpRequest req, ILogger log)
+        public async Task<IActionResult> CreateBookReading([HttpTrigger(AuthorizationLevel.Function, "post", Route = "bookreadings")] HttpRequest req, ILogger log)
         {
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var newBookReading = JsonConvert.DeserializeObject<BookReading>(requestBody);
 
-                var nextLastPriority = await LastPriority() + 1;
-                newBookReading.priority = nextLastPriority;
-
-                await Collection().InsertOneAsync(newBookReading);
+                await dBManager.AddBookReadingEntry(newBookReading);
                 return new OkObjectResult(newBookReading);
             } catch (Exception e)
             {
@@ -36,24 +39,12 @@ namespace BookReadingRepository
             }
         }
 
-        private static async Task<int> LastPriority()
-        {
-            var options = new FindOptions<BookReading>
-            {
-                Limit = 1,
-                Sort = Builders<BookReading>.Sort.Descending(bookReadingEntry => bookReadingEntry.priority)
-            };
-
-            BookReading lastPriorityBookReading = (await Collection().FindAsync(FilterDefinition<BookReading>.Empty, options)).FirstOrDefault() ?? new BookReading();
-            return lastPriorityBookReading.priority;
-        }
-
         [FunctionName("GetBookReadings")]
-        public static async Task<IActionResult> GetBookReadings([HttpTrigger(AuthorizationLevel.Function, "get", Route = "bookreadings")] HttpRequest req, ILogger log)
+        public async Task<IActionResult> GetBookReadings([HttpTrigger(AuthorizationLevel.Function, "get", Route = "bookreadings")] HttpRequest req, ILogger log)
         {
             try
             {
-                var bookReadings = await Collection().Find(_ => true).ToListAsync();
+                var bookReadings = await dBManager.GetAllBookReadingEntries();
                 return new OkObjectResult(bookReadings);
             } catch (Exception e)
             {
@@ -64,11 +55,11 @@ namespace BookReadingRepository
         }
 
         [FunctionName("DeleteBookReading")]
-        public static async Task<IActionResult> DeleteBookReading([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "bookreadings/{id}")] HttpRequest req, string id, ILogger log)
+        public async Task<IActionResult> DeleteBookReading([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "bookreadings/{id}")] HttpRequest req, string id, ILogger log)
         {
             try
             {
-                await Collection().DeleteOneAsync(bookReading => bookReading.id == id);
+                await dBManager.DeleteBookReadingEntry(id);
                 return new NoContentResult();
             } catch (Exception e)
             {
@@ -78,15 +69,5 @@ namespace BookReadingRepository
             }
         }
 
-        private static IMongoCollection<BookReading> Collection()
-        {
-            string connectionString = Environment.GetEnvironmentVariable("MONGO_DB_CONNECTION_STRING");
-            MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
-            settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
-            var mongoClient = new MongoClient(settings);
-
-            var db = mongoClient.GetDatabase("bookreadingsdb");
-            return db.GetCollection<BookReading>("bookreadings");
-        }
     }
 }
