@@ -1,4 +1,4 @@
-using BookReadingRepository;
+using BookReadingProject;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -12,7 +12,7 @@ using Xunit;
 
 namespace BookReadingRepositoryIntegrationTest
 {
-    public class BookReadingTester
+    public class BookReadingRepositoryTester
     {
         private static readonly HttpClient client = new HttpClient();
         

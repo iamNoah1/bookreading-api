@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using MongoDB.Driver;
 using System.Net;
 
-namespace BookReadingRepository
+namespace BookReadingProject
 {
     public class BookReadingRepository
     {

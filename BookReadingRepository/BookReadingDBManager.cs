@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
-namespace BookReadingRepository
+namespace BookReadingProject
 {
     public class BookReadingDBManager
     {
-        public async Task AddBookReadingEntry(BookReading newBookReading)
+        virtual public async Task AddBookReadingEntry(BookReading newBookReading)
         {
             var nextLastPriority = await LastPriority() + 1;
             newBookReading.priority = nextLastPriority;

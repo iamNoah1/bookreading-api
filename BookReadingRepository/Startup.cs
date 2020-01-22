@@ -1,8 +1,8 @@
 ﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: FunctionsStartup(typeof(BookReadingRepository.Startup))]
-namespace BookReadingRepository
+[assembly: FunctionsStartup(typeof(BookReadingProject.Startup))]
+namespace BookReadingProject
 {
     class Startup : FunctionsStartup
     {

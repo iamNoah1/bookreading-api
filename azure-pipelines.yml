@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+- '*'
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
@@ -50,9 +50,27 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
 
+- stage: Test
+  displayName: Test stage
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - job: UnitTests
+    displayName: Run UnitTests
+    pool:
+      vmImage: $(vmImageName)
+
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Run unit Tests for BookReadingRepository
+      inputs:
+        command: 'test'
+        projects: 'BookReadingRepositoryUnitTest'
+
 - stage: Deploy
   displayName: Deploy stage
-  dependsOn: Build
+  dependsOn: Test
   condition: succeeded()
 
   jobs:
