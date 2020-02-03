@@ -22,11 +22,24 @@ variables:
 
 jobs:
 - job: Build
-  displayName: Build, test and archive
+  displayName: 'Unit tests, build and archive'
   pool:
     vmImage: $(vmImageName)
 
   steps:
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'restore'
+      projects: '**/*.sln'
+      feedsToUse: 'select'
+      vstsFeed: '86f41d1b-d3bf-45d4-b7b5-74afb83bee1c/51986b3a-cec9-4ea0-b981-37c12e2d9b2e'
+
+  - task: DotNetCoreCLI@2
+    displayName: Run unit Tests for BookReadingRepository
+    inputs:
+      command: 'test'
+      projects: 'BookReadingRepositoryUnitTest'
+
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
