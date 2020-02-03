@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace BookReadingRepository
+namespace BookReadingProject
 {
     public class BookReading : IEquatable<BookReading>
     {
