@@ -20,13 +20,9 @@ variables:
   workingDirectory: '$(System.DefaultWorkingDirectory)/BookReadingRepository'
 
 
-stages:
-- stage: Build
-  displayName: Build stage
-
   jobs:
   - job: Build
-    displayName: Build
+    displayName: Build, test and archive
     pool:
       vmImage: $(vmImageName)
 
@@ -39,6 +35,12 @@ stages:
           $(workingDirectory)/*.csproj
         arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
 
+    - task: DotNetCoreCLI@2
+      displayName: Run unit Tests for BookReadingRepository
+      inputs:
+        command: 'test'
+        projects: 'BookReadingRepositoryUnitTest'
+
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
@@ -48,23 +50,5 @@ stages:
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
 
-- stage: Test
-  displayName: Test stage
-  dependsOn: Build
-  condition: succeeded()
-
-  jobs:
-  - job: UnitTests
-    displayName: Run UnitTests
-    pool:
-      vmImage: $(vmImageName)
-
-    steps:
-    - task: DotNetCoreCLI@2
-      displayName: Run unit Tests for BookReadingRepository
-      inputs:
-        command: 'test'
-        projects: 'BookReadingRepositoryUnitTest'
-        
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
