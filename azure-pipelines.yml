@@ -7,22 +7,12 @@ trigger:
 - '*'
 
 variables:
-  # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '8fa0169e-dff0-4dda-89e4-0b6fabb38796'
-
-  # Function app name
-  functionAppName: 'BookReadingRepositoryNoi'
-
   # Agent VM image name
   vmImageName: 'vs2017-win2016'
 
-  # Working Directory
-  workingDirectory: '$(System.DefaultWorkingDirectory)/BookReadingRepository'
-
-
 jobs:
 - job: Build
-  displayName: 'Unit tests, build and archive'
+  displayName: 'Unit tests, build, archive, '
   pool:
     vmImage: $(vmImageName)
 
@@ -44,8 +34,7 @@ jobs:
     displayName: Build
     inputs:
       command: 'build'
-      projects: |
-        $(workingDirectory)/*.csproj
+      projects: 'BookReadingRepository'
       arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
 
   - task: DotNetCoreCLI@2
@@ -60,8 +49,8 @@ jobs:
       rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
       includeRootFolder: false
       archiveType: zip
-      archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      archiveFile: $(Build.ArtifactStagingDirectory)/BookReadingRepository-$(Build.BuildId).zip
       replaceExistingArchive: true
 
-  - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+  - publish: $(Build.ArtifactStagingDirectory)/BookReadingRepository-$(Build.BuildId).zip
     artifact: drop
