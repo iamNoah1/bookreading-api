@@ -19,6 +19,7 @@ variables:
   # Working Directory
   workingDirectory: '$(System.DefaultWorkingDirectory)/BookReadingRepository'
 
+
 stages:
 - stage: Build
   displayName: Build stage
