@@ -38,13 +38,29 @@ jobs:
       arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
 
   - task: ArchiveFiles@2
-    displayName: 'Archive files'
+    displayName: 'Archive executables'
     inputs:
       rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
-      includeRootFolder: true
+      includeRootFolder: false
       archiveType: zip
       archiveFile: $(Build.ArtifactStagingDirectory)/BookReadingRepository-$(Build.BuildId).zip
       replaceExistingArchive: true
 
   - publish: $(Build.ArtifactStagingDirectory)/BookReadingRepository-$(Build.BuildId).zip
+    displayName: publish executables
     artifact: drop
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive integration test project'
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BookReadingRepositoryIntegrationTest'
+      includeRootFolder: true
+      archiveType: zip
+      archiveFile: $(Build.ArtifactStagingDirectory)/BookReadingRepositoryIntegrationTest-$(Build.BuildId).zip
+      replaceExistingArchive: true
+
+  - publish: $(Build.ArtifactStagingDirectory)/BookReadingRepositoryIntegrationTest-$(Build.BuildId).zip
+    displayName: publish integration tests
+    artifact: integration-tests
+
+ 
