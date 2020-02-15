@@ -43,12 +43,7 @@ namespace BookReadingRepositoryIntegrationTest
 
         private static IMongoDatabase GetDatabase()
         {
-            string workingDirectory = Environment.CurrentDirectory;
-            string solutionDirectory = Directory.GetParent(workingDirectory).Parent.Parent.Parent.FullName;
-
-            string localSettingsFile = solutionDirectory + "\\BookReadingRepository\\local.settings.json";
-            var config = new ConfigurationBuilder().AddJsonFile(localSettingsFile).AddEnvironmentVariables().Build();
-            string connectionString = config["Values:MONGO_DB_CONNECTION_STRING"];
+            string connectionString = Environment.GetEnvironmentVariable("MONGO_DB_CONNECTION_STRING");
 
             MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
             settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
