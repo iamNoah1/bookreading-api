@@ -62,5 +62,3 @@ jobs:
   - publish: $(Build.ArtifactStagingDirectory)/BookReadingRepositoryIntegrationTest.zip
     displayName: publish integration tests
     artifact: integration-tests
-
- 
