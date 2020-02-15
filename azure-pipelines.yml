@@ -37,14 +37,8 @@ jobs:
       projects: 'BookReadingRepository'
       arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
 
-  - task: DotNetCoreCLI@2
-    displayName: Run unit Tests for BookReadingRepository
-    inputs:
-      command: 'test'
-      projects: 'BookReadingRepositoryUnitTest'
-
   - task: ArchiveFiles@2
-    displayName: 'Archive files'
+    displayName: 'Archive executables'
     inputs:
       rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
       includeRootFolder: false
@@ -53,4 +47,18 @@ jobs:
       replaceExistingArchive: true
 
   - publish: $(Build.ArtifactStagingDirectory)/BookReadingRepository-$(Build.BuildId).zip
+    displayName: publish executables
     artifact: drop
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive solution'
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: $(Build.ArtifactStagingDirectory)/BookReading.zip
+      replaceExistingArchive: true
+
+  - publish: $(Build.ArtifactStagingDirectory)/BookReading.zip
+    displayName: publish solution
+    artifact: solution
