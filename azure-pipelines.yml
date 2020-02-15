@@ -54,7 +54,7 @@ jobs:
     displayName: 'Archive solution'
     inputs:
       rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-      includeRootFolder: true
+      includeRootFolder: false
       archiveType: zip
       archiveFile: $(Build.ArtifactStagingDirectory)/BookReading.zip
       replaceExistingArchive: true
