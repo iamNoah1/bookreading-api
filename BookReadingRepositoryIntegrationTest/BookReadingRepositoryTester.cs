@@ -45,7 +45,10 @@ namespace BookReadingRepositoryIntegrationTest
         {
             string connectionString = Environment.GetEnvironmentVariable("MONGO_DB_CONNECTION_STRING");
 
-            MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
+            MongoClientSettings settings = MongoClientSettings.FromUrl(
+                new MongoUrl(connectionString)
+            );
+
             settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
             var mongoClient = new MongoClient(settings);
 
