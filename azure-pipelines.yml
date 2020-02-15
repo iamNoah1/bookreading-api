@@ -56,10 +56,10 @@ jobs:
       rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BookReadingRepositoryIntegrationTest'
       includeRootFolder: true
       archiveType: zip
-      archiveFile: $(Build.ArtifactStagingDirectory)/BookReadingRepositoryIntegrationTest-$(Build.BuildId).zip
+      archiveFile: $(Build.ArtifactStagingDirectory)/BookReadingRepositoryIntegrationTest.zip
       replaceExistingArchive: true
 
-  - publish: $(Build.ArtifactStagingDirectory)/BookReadingRepositoryIntegrationTest-$(Build.BuildId).zip
+  - publish: $(Build.ArtifactStagingDirectory)/BookReadingRepositoryIntegrationTest.zip
     displayName: publish integration tests
     artifact: integration-tests
 
