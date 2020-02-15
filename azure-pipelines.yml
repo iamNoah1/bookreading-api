@@ -51,14 +51,14 @@ jobs:
     artifact: drop
 
   - task: ArchiveFiles@2
-    displayName: 'Archive integration test project'
+    displayName: 'Archive solution'
     inputs:
-      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BookReadingRepositoryIntegrationTest'
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
       includeRootFolder: true
       archiveType: zip
-      archiveFile: $(Build.ArtifactStagingDirectory)/BookReadingRepositoryIntegrationTest.zip
+      archiveFile: $(Build.ArtifactStagingDirectory)/BookReading.zip
       replaceExistingArchive: true
 
-  - publish: $(Build.ArtifactStagingDirectory)/BookReadingRepositoryIntegrationTest.zip
-    displayName: publish integration tests
-    artifact: integration-tests
+  - publish: $(Build.ArtifactStagingDirectory)/BookReading.zip
+    displayName: publish solution
+    artifact: solution
