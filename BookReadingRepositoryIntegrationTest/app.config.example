@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="API_BASE_URL" value="" />
+    <add key="MONGO_DB_CONNECTION_STRING" value="" />
+  </appSettings>
+</configuration>

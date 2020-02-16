@@ -1,11 +1,11 @@
 using BookReadingProject;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using System;
-using System.IO;
+using System.Configuration;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
 using Xunit;
@@ -15,7 +15,21 @@ namespace BookReadingRepositoryIntegrationTest
     public class BookReadingRepositoryTester
     {
         private static readonly HttpClient client = new HttpClient();
-        
+
+        private static string apiBaseUrl = GetSetting("API_BASE_URL");
+
+        public static string GetSetting(string key)
+        {
+            var value = Environment.GetEnvironmentVariable(key);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                value = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location).AppSettings.Settings[key].Value;
+            }
+
+            return value;
+        }
+
         [Fact]
         public async System.Threading.Tasks.Task BookReadingRepositoryShouldAddBookReadingEntryReturn200AndTheAddedBookReadingEntryIfSuccessfullyAdded()
         {
@@ -27,7 +41,7 @@ namespace BookReadingRepositoryIntegrationTest
 
             var content = new StringContent(bd.ToJson(), Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("http://localhost:7071/api/bookreadings", content);
+            var response = await client.PostAsync(apiBaseUrl + "/api/bookreadings", content);
             var responseContent = response.Content.ReadAsStringAsync();
 
             BookReading result = JsonConvert.DeserializeObject<BookReading>(responseContent.Result);
@@ -43,7 +57,7 @@ namespace BookReadingRepositoryIntegrationTest
 
         private static IMongoDatabase GetDatabase()
         {
-            string connectionString = Environment.GetEnvironmentVariable("MONGO_DB_CONNECTION_STRING");
+            string connectionString = GetSetting("MONGO_DB_CONNECTION_STRING");
 
             MongoClientSettings settings = MongoClientSettings.FromUrl(
                 new MongoUrl(connectionString)
@@ -76,7 +90,7 @@ namespace BookReadingRepositoryIntegrationTest
             collection.InsertOne(universe);
             collection.InsertOne(refactoring);
 
-            var response = await client.GetAsync("http://localhost:7071/api/bookreadings");
+            var response = await client.GetAsync(apiBaseUrl + "/api/bookreadings");
             var responseContent = response.Content.ReadAsStringAsync();
 
             BookReading[] result = JsonConvert.DeserializeObject<BookReading[]>(responseContent.Result);
@@ -101,7 +115,7 @@ namespace BookReadingRepositoryIntegrationTest
 
             var content = new StringContent(bd.ToJson(), Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("http://localhost:7071/api/bookreadings", content);
+            var response = await client.PostAsync(apiBaseUrl + "/api/bookreadings", content);
             var responseContent = response.Content.ReadAsStringAsync();
 
             bd = new BsonDocument {
@@ -110,7 +124,7 @@ namespace BookReadingRepositoryIntegrationTest
 
             content = new StringContent(bd.ToJson(), Encoding.UTF8, "application/json");
 
-            response = await client.PostAsync("http://localhost:7071/api/bookreadings", content);
+            response = await client.PostAsync(apiBaseUrl + "/api/bookreadings", content);
             responseContent = response.Content.ReadAsStringAsync();
 
             BookReading universe = GetDatabase().GetCollection<BookReading>("bookreadings").Find(entry => entry.name == "universe in a nutshell").Single();
@@ -135,7 +149,7 @@ namespace BookReadingRepositoryIntegrationTest
 
             collection.InsertOne(universe);
 
-            var response = await client.DeleteAsync("http://localhost:7071/api/bookreadings/" + universe.id);
+            var response = await client.DeleteAsync(apiBaseUrl + "/api/bookreadings/" + universe.id);
 
             var bookReadings = await GetDatabase().GetCollection<BookReading>("bookreadings").Find(_ => true).ToListAsync();
 

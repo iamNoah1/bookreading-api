@@ -22,7 +22,7 @@ namespace BookReadingProject
         }
 
         [FunctionName("CreateBookReading")]
-        public async Task<IActionResult> CreateBookReading([HttpTrigger(AuthorizationLevel.Function, "post", Route = "bookreadings")] HttpRequest req, ILogger log)
+        public async Task<IActionResult> CreateBookReading([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "bookreadings")] HttpRequest req, ILogger log)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace BookReadingProject
         }
 
         [FunctionName("GetBookReadings")]
-        public async Task<IActionResult> GetBookReadings([HttpTrigger(AuthorizationLevel.Function, "get", Route = "bookreadings")] HttpRequest req, ILogger log)
+        public async Task<IActionResult> GetBookReadings([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "bookreadings")] HttpRequest req, ILogger log)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace BookReadingProject
         }
 
         [FunctionName("DeleteBookReading")]
-        public async Task<IActionResult> DeleteBookReading([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "bookreadings/{id}")] HttpRequest req, string id, ILogger log)
+        public async Task<IActionResult> DeleteBookReading([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "bookreadings/{id}")] HttpRequest req, string id, ILogger log)
         {
             try
             {

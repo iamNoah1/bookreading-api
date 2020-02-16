@@ -29,6 +29,7 @@ A sample Azure Functions Visual Studio Solution. Allows to store a prioritized l
 
 # Run Integration Tests
 
+* Copy `app.config.example` to `app.config` and fill variables.
 * Start Functions either through Visual Studio or from CLI.
 * Through Visual Studio, use the context menue of the BookReadingRepositoryIntegrationTest project to run test. 
 * **Hint**: It is recommended to start the Functions using the CLI. Otherwise you will have to open 2 instances of Visual Studio. One to run the Functions, the other one to run the tests.
