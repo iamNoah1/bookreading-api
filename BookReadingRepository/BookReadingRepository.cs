@@ -24,7 +24,7 @@ namespace BookReadingProject
         [FunctionName("hello")]
         public async Task<IActionResult> Hello([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "hello")] HttpRequest req, ILogger log)
         {
-            return new OkObjectResult("hello");
+            return new OkObjectResult("hello2");
         }
 
         [FunctionName("CreateBookReading")]
