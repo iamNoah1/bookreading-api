@@ -21,6 +21,12 @@ namespace BookReadingProject
             this.dBManager = dbManager;
         }
 
+        [FunctionName("hello")]
+        public async Task<IActionResult> Hello([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "hello")] HttpRequest req, ILogger log)
+        {
+            return new OkObjectResult("hello");
+        }
+
         [FunctionName("CreateBookReading")]
         public async Task<IActionResult> CreateBookReading([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "bookreadings")] HttpRequest req, ILogger log)
         {
