@@ -12,7 +12,7 @@ variables:
 
 jobs:
 - job: Build
-  displayName: 'Unit tests, build, archive, '
+  displayName: 'Unit test, build, archive, publish'
   pool:
     vmImage: $(vmImageName)
 
