@@ -27,6 +27,9 @@ A sample Azure Functions Visual Studio Solution. Allows to store a prioritized l
 * Using [Azure Functions Core Tools](https://github.com/Azure/azure-functions-core-tools) to start function. Therefore change to BookReadingRepository directory and simply run `func start`.
 
 
+
+
+
 # Run Integration Tests
 
 * Copy `app.config.example` to `app.config` and fill variables.
