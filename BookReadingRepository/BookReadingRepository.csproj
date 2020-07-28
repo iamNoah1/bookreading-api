@@ -8,6 +8,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.29" />
     <PackageReference Include="MongoDB.Bson" Version="2.10.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.10.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

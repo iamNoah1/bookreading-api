@@ -6,28 +6,27 @@ A sample Azure Functions Visual Studio Solution. Allows to store a prioritized l
 
 * BookReadingRepository
 * BookReadingRepositoryIntegrationTest
+* BookReadingRepositoryUnitTest
 
 
 # Endpoints
 
-* POST <baseurl>:<port>/api/bookreadings
-* GET <baseurl>:<port>/api/bookreadings
-* DELETE <baseurl>:<port>/api/bookreadings/<id>
+* POST \<baseurl\>:\<port\>/api/bookreadings
+* GET \<baseurl\>:\<port\>/api/bookreadings
+* DELETE \<baseurl\>:\<port\>/api/bookreadings/\<id\>
 
 
 # Preparation
 
 * Checkout repository 
 * Copy `local.settings.json.example` to `local.settings.json` and maybe adjust the env variable `MONGO_DB_CONNECTION_STRING`
+* Have a MongoDB instance running, that is reachable under `MONGO_DB_CONNECTION_STRING`
 
 
 # Run locally
 
 * Using Visual Studio UI to start Functions from BookReadingRepository
 * Using [Azure Functions Core Tools](https://github.com/Azure/azure-functions-core-tools) to start function. Therefore change to BookReadingRepository directory and simply run `func start`.
-
-
-
 
 
 # Run Integration Tests
