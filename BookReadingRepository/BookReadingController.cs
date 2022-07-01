@@ -12,11 +12,11 @@ using System.Net;
 
 namespace BookReadingProject
 {
-    public class BookReadingRepository
+    public class BookReadingController
     {
         private BookReadingDBManager dBManager;
 
-        public BookReadingRepository(BookReadingDBManager dbManager)
+        public BookReadingController(BookReadingDBManager dbManager)
         {
             this.dBManager = dbManager;
         }
